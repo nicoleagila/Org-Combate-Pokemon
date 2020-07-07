@@ -24,7 +24,7 @@ def batalla(nombre1, nombre2, tipo1, tipo2):
     print("{0} es el Ganador!".format(nombres[ganador]))
 
 
-def ataque(p1, p2, nombre, vida, ataques):
+def ataque(p1, p2, nombre, vida, ataques):                          #si
     print("{0}: Vida: {1} Ataque:{2} Ataca a {3}: Vida: {4}\tAtaque:{5}".format(
         nombre[p1], vida[p1], ataques[p1], nombre[p2], vida[p2], ataques[p2]))
     vida[p2] = vida[p2]-ataques[p1]
@@ -37,7 +37,7 @@ def ataque(p1, p2, nombre, vida, ataques):
     print()
 
 
-def readFile():
+def readFile():                                                     #si
     pokemons = []
     types = []
     with open('pokeTypes.txt', 'r') as file:
@@ -48,7 +48,7 @@ def readFile():
     return pokemons, types
 
 
-def getTenPokemons(allPokemos, allTypes):
+def getTenPokemons(allPokemos, allTypes):                           #si
     startIndex = random.randint(0, 99)
     endIndex = startIndex + 11
     return allPokemos[startIndex:endIndex], allTypes[startIndex:endIndex]
@@ -92,7 +92,7 @@ def start():
     batalla(nombrePoke1, nombrePoke2, tipoPoke1, tipoPoke2)
 
 
-def obtenerMatrizVentajas(archivo: str):
+def obtenerMatrizVentajas(archivo: str):                            #si
     with open(archivo, "r") as f:
         matriz = []
         for line in f:
@@ -100,13 +100,13 @@ def obtenerMatrizVentajas(archivo: str):
     return np.array(matriz, dtype=float)
 
 
-def getFactor(atackType, defenseType, arrayTypes, matrixAdv):
+def getFactor(atackType, defenseType, arrayTypes, matrixAdv):       #si
     j = list(arrayTypes).index(atackType)
     i = list(arrayTypes).index(defenseType)
     return matrixAdv[i, j]
 
 
-def getTypeArray(archivo):
+def getTypeArray(archivo):                                          #si
     with open(archivo, "r") as f:
         matriz = []
         for line in f:
