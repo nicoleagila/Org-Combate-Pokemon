@@ -16,15 +16,17 @@ def batalla(nombre1, nombre2, tipo1, tipo2):
     vida = np.array([5.0, 5.0])
 
     while (vida[0] > 0) and (vida[1] > 0):
-        ataque(0, 1, nombres, vida, ataques)
+        ataque([0, 1], nombres, vida, ataques)
         if(vida[1] > 0):
-            ataque(1, 0, nombres, vida, ataques)
+            ataque([1, 0], nombres, vida, ataques)
 
     ganador = vida.argmax()
     print("{0} es el Ganador!".format(nombres[ganador]))
 
 
-def ataque(p1, p2, nombre, vida, ataques):                          #si
+def ataque([indices, nombre, vida, ataques):                          #YA ESTA
+    p1=indices[0]
+    p2=indices[1]
     print("{0}: Vida: {1} Ataque:{2} Ataca a {3}: Vida: {4}\tAtaque:{5}".format(
         nombre[p1], vida[p1], ataques[p1], nombre[p2], vida[p2], ataques[p2]))
     vida[p2] = vida[p2]-ataques[p1]

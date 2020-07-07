@@ -1,17 +1,18 @@
 
 		.data
 
-str1: 		.asciiz ": Vida "
-str2: 		.asciiz "Ataque		: "
+str1: 		.asciiz ": Vida: "
+str2: 		.asciiz "Ataque: "
 str3: 		.asciiz "Ataca a "
 tab: 		.asciiz " "
 
         .text
+.globl printInicio
 
-#Parametros:    indices-> $s0, nombre -> $s1, vida ->$a2, ataque -> $a3
+#Parametros:    indices-> $a0, nombre -> $a1, vida ->$a2, ataque -> $a3
 #No hay retorno, solo muestra por pantalla
 
-print:
+printInicio:
 
 	addi $sp, $sp, -24
 	sw $s1, 0($sp)
@@ -21,11 +22,10 @@ print:
 	sw $t3, 16($sp)
 	sw $t4, 20($sp)
 
-	la $s0, ($a0)
+	la $s0, ($a0)			#indices-> $s0, nombre -> $s1
 	la $s1, ($a1)
 
 	li $a1, 0
-	#la $a0, ($s0)
 	jal index
 	move $t2, $v0			#i=indices[0] -> $t2 indice del atacante.
 	

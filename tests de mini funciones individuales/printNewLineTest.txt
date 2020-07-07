@@ -1,0 +1,27 @@
+		.data
+
+str1: 		.asciiz "Resultado del ataque:\n"
+
+        .text
+
+#Parametros:    texto que va a imprimir-> $a0
+#No hay retorno, solo muestra por pantalla
+
+main:
+	la $a0, str1
+	jal printInicio
+	
+	li $v0, 10		#salida del programa
+	syscall
+
+printInicio:
+	add $sp, $sp, -4
+	sw $ra, 0($sp)
+	
+	li $v0, 4
+	syscall
+    
+	jr $ra
+	
+	sw $ra, 0($sp)
+	add $sp, $sp, 4
