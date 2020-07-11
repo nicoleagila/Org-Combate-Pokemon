@@ -50,7 +50,7 @@ def readFile():                                                     #si
     return pokemons, types
 
 
-def getTenPokemons(allPokemos, allTypes):                           #si
+def getTenPokemons(allPokemos, allTypes):                           #YA ESTA
     startIndex = random.randint(0, 99)
     endIndex = startIndex + 11
     return allPokemos[startIndex:endIndex], allTypes[startIndex:endIndex]
@@ -102,7 +102,7 @@ def obtenerMatrizVentajas(archivo: str):                            #si
     return np.array(matriz, dtype=float)
 
 
-def getFactor(atackType, defenseType, arrayTypes, matrixAdv):       #si
+def getFactor(atackType, defenseType, arrayTypes, matrixAdv):       #YA ESTA
     j = list(arrayTypes).index(atackType)
     i = list(arrayTypes).index(defenseType)
     return matrixAdv[i, j]

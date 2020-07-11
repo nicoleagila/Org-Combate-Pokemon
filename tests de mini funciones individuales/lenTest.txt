@@ -1,0 +1,47 @@
+.data
+pok: .asciiz "hola"
+pok1: .asciiz "como"
+pok2: .asciiz "estan"
+array1: .word   pok, pok1, pok2
+
+.text
+main:
+        la  $a0,array1
+        jal len
+
+        move $a0,$v0
+        
+        li $v0, 1
+        syscall
+        
+        li $v0, 10
+        syscall
+        
+#parametros: arreglo -> $a0
+#retorna la longitud del arreglo en $v0
+len:
+        addi $sp,$sp,-16
+        sw  $ra,0($sp)
+        sw  $a0,4($sp)
+        sw $t1, 8($sp)
+        sw $t2, 12($sp)
+        
+        
+        
+        li  $t1,0
+bucle:
+        lw  $t2,0($a0)
+        beq $t2,$zero,retorno
+        addi $t1,$t1,1
+        addi $a0,$a0,4
+        j   bucle
+
+retorno:    
+        move $v0,$t1
+        lw  $ra,0($sp)
+        lw  $a0,4($sp)
+        lw $t1, 8($sp)
+        lw $t2, 12($sp)
+        addi  $sp,$sp,16
+        jr  $ra
+        
