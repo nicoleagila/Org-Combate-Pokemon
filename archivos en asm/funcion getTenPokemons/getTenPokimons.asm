@@ -4,26 +4,28 @@ chosenTypes:	.space 5000
 
 	.text
 .globl getTenPokemons
-
+# a0 -> Arreglo de pokemons
+# a1 -> Arreglo de tipos
+# Funcion que retorna dos arreglos paralelos en $v0->Arreglo con 10 pokemones y $v1->arreglo con 10 tipos 
 getTenPokemons:
-	# a0 -> Arreglo de pokemons
-	# a1 -> Arreglo de tipos
 	#Reservacion de memoria
-	addi $sp, $sp, -28  
+	addi $sp, $sp, -36 
     	sw $t0, 0($sp)
     	sw $t1, 4($sp)
     	sw $t2, 8($sp)
     	sw $t3, 12($sp)
     	sw $t4, 16($sp)
     	sw $s0, 20($sp)
-    	sw $ra, 24($sp)
+    	sw $s1, 24($sp)
+    	sw $s2, 28($sp)
+    	sw $ra, 32($sp)
     	
 	la $s1, chosenOnes
 	la $s2, chosenTypes
 	
 	jal random
 	move $t0, $v0
-	add $t4, $t0, 1  # +10 para saber el limite de pokemones que queremos
+	add $t4, $t0, 10  # +10 para saber el limite de pokemones que queremos
 	
 	li $t3, 0
 loop:
@@ -62,8 +64,10 @@ exit:
     	lw $t3, 12($sp)
     	lw $t4, 16($sp)
     	lw $s0, 20($sp)
-    	lw $ra, 24($sp)
-	addi $sp, $sp, 28    	
+    	lw $s1, 24($sp)
+    	lw $s2, 28($sp)
+    	lw $ra, 32($sp)
+	addi $sp, $sp, 36   	
     	
 	jr $ra
 	

@@ -9,7 +9,7 @@ random:
     	sw $a0, 4($sp)
     	sw $a1, 8($sp)
     
-    	li $a1, 3 #Here you set $a1 to the max bound.
+    	li $a1, 100 #Here you set $a1 to the max bound.
     	li $v0, 42 #generates the random number.
     	syscall
   	
