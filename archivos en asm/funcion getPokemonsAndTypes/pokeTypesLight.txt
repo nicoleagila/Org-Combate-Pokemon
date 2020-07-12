@@ -1,2 +1,2 @@
-Seviper,poison
+Seviper,poison	
 Metagross,steel
