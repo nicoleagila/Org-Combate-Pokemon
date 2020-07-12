@@ -1,1 +1,2 @@
-Nicol,human
+Seviper,poison
+Metagross,steel

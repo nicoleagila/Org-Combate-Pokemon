@@ -1,15 +1,13 @@
 	.data
 fout:   .asciiz "\\A:\\Asus\\Documents\\Orgy\\Project\\Org-Combate-Pokemon\\archivos en asm\\funcion getPokemonsAndTypes\\pokeTypesLight.txt"      # filename for output
 
-
-comma:  .asciiz ","
-word:	.space  20000       # [NEW]
-
+comma:	.ascii ","
+r:	.ascii "\r"
+void:	.ascii "\0"
 		.align 2
-pokemons:	.space	8
+pokemons:	.space	30
 		.align 2
-types:		.space	8
-	
+types:		.space	30
 	.text
 .globl 	main
 
@@ -22,198 +20,100 @@ main:
   	#syscall
   	
   	jal getPokemonsAndTypes
-  
+  	
+ 	li $t0, 0
+  	
+  	lw $a0, pokemons($t0)
+  	li $v0, 4
+  	syscall
+  	
+  	lw $a0, types($t0)
+  	li $v0, 4
+  	syscall
+  	
+  	li $t0, 4
+  	
+  	lw $a0, pokemons($t0)
+  	li $v0, 4
+  	syscall
+  	
+  	lw $a0, types($t0)
+  	li $v0, 4
+  	syscall
+  	
   	li $v0, 10
   	syscall
 
-# $a0 -> El texto del archivo en un buffer
+	
+# $a0-> se cambia a $s0, el buffer
+#$t0 -> i 
+# $s1 -> word en donde guardar las palabras
 # Funcion que me retorna dos arreglos paralelos $v0->Arreglo con todos los pokemones y  $v1->Areglo con todos los tipos
 getPokemonsAndTypes:
-	#Reservacion de memoria
-  	addi $sp, $sp, -20 
-    	sw $t0, 0($sp)
-    	sw $a1, 4($sp)
-    	sw $a2, 8($sp)
-    	sw $a0, 12($sp)
-    	sw $ra, 16($sp)
-    	
-    	move $t6, $a0
-    	li $a0 16 #enough space for two integers
-    	li $v0 9 #syscall 9 (sbrk)
-    	syscall
-        move $s2, $v0
-    	move $a0, $t6
-    	
-  	li $s0, 0  	
-   	lb $t0, 0($a0)
-   	add $s1, $s0, $s2
-    	sb $t0, 0($s1)
-    	
-    	addi $s0, $s0, 1
-    	lb $t0, 1($a0)
-    	add $s1, $s0, $s2
-    	sb $t0, 0($s1)
-    	
-    	addi $s0, $s0, 1
-    	lb $t0, 2($a0)
-    	add $s1, $s0, $s2
-    	sb $t0, 0($s1)
-    	
-    	addi $s0, $s0, 1
-    	lb $t0, 3($a0)
-    	add $s1, $s0, $s2
-    	sb $t0, 0($s1)
-    	
-    	addi $s0, $s0, 1
-    	lb $t0, 4($a0)
-    	add $s1, $s0, $s2
-    	sb $t0, 0($s1)
-    	
-    	# Validar si bit es ","
-    	# saltarse la coma
-    	
-   	
-    	#Guardar word en pokemons
-    	
-    	li $t0,0
-    	move $s6, $s2
-    	sw $s6, pokemons($t0)
-    	
-    	
-    	# go to recorrer para tipos
-    	
-    	#advance word into 20
-    	move $t6, $a0
-    	li $a0 16 #enough space for two integers
-    	li $v0 9 #syscall 9 (sbrk)
-    	syscall
-        move $s2, $v0
-    	move $a0, $t6
-    	
-    	#Recorres despues de la coma
-    	li $s0, 0  	
-   	lb $t0, 6($a0)
-   	add $s1, $s0, $s2
-   	sb $t0, 0($s1)
-   	
-   	addi $s0, $s0, 1	
-   	lb $t0, 7($a0)
-	add $s1, $s0, $s2
-   	sb $t0, 0($s1)
-   	
-   	addi $s0, $s0, 1	
-   	lb $t0, 8($a0)
-	add $s1, $s0, $s2
-   	sb $t0, 0($s1)
-   	
-   	addi $s0, $s0, 1	
-   	lb $t0, 9($a0)
-	add $s1, $s0, $s2
-   	sb $t0, 0($s1)
-   	
-   	addi $s0, $s0, 1	
-   	lb $t0, 10($a0)
-	add $s1, $s0, $s2
-   	sb $t0, 0($s1)
-   	
-   	#Bit es \n
-   	# saltarse la \n
-   	#Guardar word en types
-    	li $t0,0
-    	move $s6, $s2
-    	sw $s6, types($t0)
-    	
-    	lw $a0, pokemons($t0)
-    	li $v0, 4
-    	syscall
-    	
-    	lw $a0, types($t0)
-    	li $v0, 4
-    	syscall
-    	
-    	#Liberacion de memoria
-    	lw $t0, 0($sp)
-    	lw $a1, 4($sp)
-    	lw $a2, 8($sp)
-    	lw $a0, 12($sp)
-    	lw $ra, 16($sp)
-    	addi $sp, $sp, 20 
-  	jr $ra
+	# Reservacion de sp
+	addi $sp, $sp, -4
+    	sw $ra, 0($sp)
 	
+	move $s0, $a0 	#cambio de variable a el arreglo para dejar llibre $a0
+	li $t0, 0	#iterador i
+	li $t1, 0	#iterador de guardacion
 	
 whileNotComma:
-	#for
-
-whileNotNewLine:
-	#for
-
-
-
-# Compara que un si un bit es \n, si bit===\n =1
-isNewLine:
-	#Reservar memoria
-    	addi $sp, $sp, -16  #(3*4)
-    	sw $s0, 0($sp)
-    	sw $t0, 4($sp)
-    	sw $a0, 8($sp)
-    	sw $ra, 12($sp)
+	jal heapReservation
+	move $s1, $v0
+	doComma:
+	add $t2, $t0, $s0	# offset + BA del buffer 
+	lb $a0, 0($t2)		#obtengo el bit a comparar
+	lb $a1, comma		# guardo bit para comparar
+	
+	jal compareBit
+	
+	whileComma:
+	beq $v0, 0, savePokemon
+	
+	add $s2, $t0, $s1
+   	sb $a0, 0($s2)
+   	addi $t0, $t0, 1
+	j doComma
+	
+savePokemon:
+    	sw $s1, pokemons($t1)
+    	addi $t0, $t0, 1
+    	j whileNotR
     	
-    	li $s0, '\n'
-    	beq $a0, $s0, then
-
-    	li $t0, 0
-    	move $v0, $t0
-    	j endIsNewLine
-    	
-    then:
-    	li $t0, 1
-    	move $v0, $t0
-    
-    endIsNewLine:
-    	#liberar la memoria
-    	lw $s0, 0($sp)
-    	lw $t0, 4($sp)
-    	lw $a0, 8($sp)
-    	lw $ra, 12($sp)
-    	addi $sp, $sp, 16   #(1*4)
-    	
-    	jr $ra
-
-# Compara que un si un bit es ",", si bit==="," =1
-isComma:
-	#Reservar memoria
-    	addi $sp, $sp, -16  #(3*4)
-    	sw $s0, 0($sp)
-    	sw $t0, 4($sp)
-    	sw $a0, 8($sp)
-    	sw $ra, 12($sp)
-    	
-    	li $s0, ','
-    	beq $a0, $s0, then
-
-    	li $t0, 0
-    	move $v0, $t0
-    	j endIsComma
-    	
-    then:
-    	li $t0, 1
-    	move $v0, $t0
-    
-    endIsComma:
-    	#liberar la memoria
-    	lw $s0, 0($sp)
-    	lw $t0, 4($sp)
-    	lw $a0, 8($sp)
-    	lw $ra, 12($sp)
-    	addi $sp, $sp, 16   #(1*4)
-    	
-    	jr $ra
-
+whileNotR:
+	jal heapReservation
+	move $s1, $v0
+	doR:
+	add $t2, $t0, $s0	# offset + BA del buffer 
+	lb $a0, 0($t2)		#obtengo el bit a comparar	
+	lb $a1, void		# guardo bit para comparar
+	jal compareBit
 	
+	whileR:
+	beq $v0, 0, saveLast
 	
+	lb $a1, r		# guardo bit para comparar
+	jal compareBit
 	
+	beq $v0, 0, saveType
 	
+	add $s2, $t0, $s1
+   	sb $a0, 0($s2)
+   	addi $t0, $t0, 1
+	j doR
 	
+saveType:
+    	sw $s1, types($t1)
+    	addi $t0, $t0, 2	#aumento 2 para saltar en \r y \n
+    	addi $t1, $t1, 4	#aumento en 4 el iterador de las guardaciones en types y pokemons
+    	j whileNotComma
+ 
+saveLast:
+    	sw $s1, types($t1)
 	
-	
+        lw $ra, 0($sp)
+        addi $sp, $sp, 4
+        
+	jr $ra	#retornar
 	
