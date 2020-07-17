@@ -99,7 +99,7 @@ saveType:
 	#move $s5, $s1
 	add $t3, $s7, $t1
     	sw $s5, 0($t3)
-    	addi $t0, $t0, 3	#aumento 2 para saltar en \r y \n
+    	addi $t0, $t0, 2	#aumento 2 para saltar en \t y \n
     	add $t4, $0, $0		#encero mi escritor
     	addi $t1, $t1, 4	#aumento en 4 el iterador de las guardaciones en types y pokemons
     	addi    $s1,$s1,15

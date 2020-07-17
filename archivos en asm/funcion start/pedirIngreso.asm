@@ -1,7 +1,7 @@
 .data
 	.eqv SIZE 10
 input: .space SIZE
-mensajePedir:	.asciiz "Ingrese un pokemon del 1 al 10 (11 para salir).\n-> "
+mensajePedir:	.asciiz "Ingrese un pokemon del 0 al 9 (10 para salir).\n-> "
 
 .text
 .globl pedirIngreso
@@ -39,12 +39,12 @@ pedir:
 
 comparaRango:
 
-	li  $t0, 1					#carga extremo inferior
-	beq $s0, 11, salida
+	li  $t0, 0					#carga extremo inferior
+	beq $s0, 10, salida
 	
 	bltu   $s0 ,$t0, pedir		       		# si numero < '0' no es un digito
 	
-	li  $t0, 11					#carga extremo superior
+	li  $t0, 10					#carga extremo superior
 	bltu $t0 ,$s0, pedir	        		# si numero < '0' no es un digito
 	
 	move $v0, $s0

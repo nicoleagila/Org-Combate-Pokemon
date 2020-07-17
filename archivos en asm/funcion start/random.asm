@@ -13,9 +13,7 @@ random:
     	li $a1, 100 #Here you set $a1 to the max bound.
     	li $v0, 42 #generates the random number.
     	syscall
-  	
-  	li $v0, 1
-  	syscall
+
     	move $v0, $a0
     		
     	#Liberacion de memoria
