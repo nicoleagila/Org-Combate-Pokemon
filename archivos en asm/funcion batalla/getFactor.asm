@@ -1,15 +1,17 @@
 .data
+.eqv DIMENSION 18
 .eqv DATA_SIZE 4
+
 .text
 
 .globl getFactor
 
 #parametros
 #$a0 -> tipo de ataque del pokemon
-#$a1 -> tipo de defensa del pokemon
+#$a1 -> tipo de defensa del pokemon al que atacara
 #$a2 -> arreglo de tipos
 #a3 -> matriz de valores
-#retorna en $v0 el factor de ataque del pokemon
+#retorna en $f0 el factor de ataque del pokemon
 getFactor:
 		addi $sp, $sp, -48
 		sw $s0, 0($sp)
@@ -34,7 +36,7 @@ getFactor:
 	
 		li $t0, 0			# $t0 -> k=0
 			
-		li $s4, DATA_SIZE		# $s4 -> dimension del arreglo
+		li $s4, DIMENSION		# $s4 -> dimension del arreglo
 		
 		# k<len and (j<0 or i<0)
 condicion:	
@@ -74,45 +76,21 @@ guardarDefensa:
 		move $s2, $t0		
 		
 incremento:
-		jal printLn
-		
-		la $a0, ($s2)
-		li $v0, 1
-		syscall
-		
-		jal printLn
-		
-		la $a0, ($s3)
-		li $v0, 1
-		syscall
-		
-		jal printLn
-		
 		addi $t0, $t0, 1
 		j condicion
 
 
 retorno:
+		
 	# addd= baseAddr + (rowIndex * colSize + colIndex) *dataSize
 		
 		#indexar a matrix
 		mul $t5, $s3, $s4		# $t5 = i * size
 		add $t5, $t5, $s2		#	 + j
 		mul $t5, $t5, DATA_SIZE		# * DATA_SIZE	
-				jal printLn
-		la $a0, ($t5)
-		li $v0, 1
-		syscall
-				jal printLn
-			
-				
-						
+		
 		add $t5, $t5, $a3		# + baseAddress	
 		l.s $f0, ($t5)
-		
-		mov.s $f12, $f0
-		li $v0, 2
-		syscall	
 		
 		lw $s0, 0($sp)
 		lw $s1, 4($sp)

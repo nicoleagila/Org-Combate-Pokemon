@@ -32,6 +32,7 @@ bucle:
 continua:
 
         beq $s0	, $s2, fin		#verifica si alguna de las dos palabras terminaron
+        beq $s1	, $s2, fin
 					#continua
         addi $a0, $a0, 1		#aunmenta ambas direcciones en 1 para volver a comparar
         addi $a1, $a1, 1

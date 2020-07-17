@@ -5,8 +5,9 @@
 .globl printLn
 
 printLn:
-	addi $sp, $sp, -4
+	addi $sp, $sp, -8
 	sw $ra, 0($sp)
+	sw $a0, 4($sp)
 	
 	
 	li $v0, 4  
@@ -14,5 +15,6 @@ printLn:
 	syscall 
     
 	lw $ra, 0($sp)
-	addi $sp, $sp, 4
+	lw $a0, 4($sp)
+	addi $sp, $sp, 8
 	jr $ra

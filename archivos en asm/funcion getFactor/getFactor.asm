@@ -9,7 +9,7 @@
 #$a1 -> tipo de defensa del pokemon
 #$a2 -> arreglo de tipos
 #a3 -> matriz de valores
-#retorna en $v0 el factor de ataque del pokemon
+#retorna en $f0 el factor de ataque del pokemon
 getFactor:
 		addi $sp, $sp, -48
 		sw $s0, 0($sp)
@@ -110,9 +110,6 @@ retorno:
 		add $t5, $t5, $a3		# + baseAddress	
 		l.s $f0, ($t5)
 		
-		mov.s $f12, $f0
-		li $v0, 2
-		syscall	
 		
 		lw $s0, 0($sp)
 		lw $s1, 4($sp)
