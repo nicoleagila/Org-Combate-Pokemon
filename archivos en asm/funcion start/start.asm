@@ -1,15 +1,60 @@
 .data
 feedback:	.asciiz "Usted escogio el pokemon numero "
 mensajeSalida:	.asciiz "Usted termino el programa con exito.\n"
+fout:   .asciiz "/home/nicoleagila/Documents/ESPOL/6s/Organizacion/Proyecto1P/Org-Combate-Pokemon/archivos en asm/funcion getPokemonsAndTypes/pokeTypes.txt"      # filename for output
 
 .text
-#.globl main
+.globl main
 
-#main:
-#	jal readFile
+main:
+  	
 mostrarPokemones:
-		#10poketypes
-		#mostrar 10 pokemones
+		
+		
+	la $a0, fout
+  	jal read
+  	
+  	la $a0, ($v0)
+  	
+  	jal getPokemonsAndTypes
+  	
+  	la $s1, ($v0)
+  	la $s2, ($v1)
+  	
+  	la $a0, ($s1)
+	la $a1, ($s2)
+	
+	jal getTenPokemons
+	la $s0, ($v0)			#10 pokemones
+	la $s1, ($v1)			#10 tiposs
+								#PROBANDO
+	addi $t0, $s0, 0
+	jal     printLn
+	li $v0, 4
+	lw $a0, 0($t0)
+	syscall
+	
+	addi $t0, $s0, 4
+	jal     printLn
+	li $v0, 4
+	lw $a0, 0($t0)
+	syscall
+	
+	addi $t0, $s1, 0
+	jal     printLn
+	li $v0, 4
+	lw $a0, 0($t0)
+	syscall
+	
+	addi $t0, $s1, 4
+	jal     printLn
+	li $v0, 4
+	lw $a0, 0($t0)
+	syscall
+	
+	li $v0, 10
+	syscall
+		j done
 
 ingreso:
 	jal pedirIngreso
@@ -58,7 +103,7 @@ batalla:
 
 		#indexar tipo y nombres para tener 2 pokemones
 #		jal batalla
-
+done:
 salir:
          li $v0,10 			#termina
          syscall

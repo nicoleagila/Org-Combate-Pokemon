@@ -1,12 +1,12 @@
 	.data
-fout:   .asciiz "\\A:\\Asus\\Documents\\Orgy\\Project\\Org-Combate-Pokemon\\archivos en asm\\funcion getPokemonsAndTypes\\pokeTypes.txt"      # filename for output
+fout:   .asciiz "/home/nicoleagila/Documents/ESPOL/6s/Organizacion/Proyecto1P/Org-Combate-Pokemon/archivos en asm/funcion getPokemonsAndTypes/pokeTypes.txt"      # filename for output
 	.text
 .globl 	main
 
 main:
   	la $a0, fout
   	jal read
-  	
+
   	la $a0, ($v0)
   	
   	jal getPokemonsAndTypes
