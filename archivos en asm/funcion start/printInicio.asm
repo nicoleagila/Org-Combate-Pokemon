@@ -103,10 +103,16 @@ printInicio:
 
     li $v0, 2
     syscall				#imprime vida del atacado
+    
+        
+    li $v0, 4
+    la $a0, tab
+    syscall				#imprime una tabulacion
 
     li $v0, 4
     la $a0, str2
     syscall				#imprime texto en str2
+
 
 	la $a1, ($t3)
 	la $a0, ($a3)

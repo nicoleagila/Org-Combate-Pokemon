@@ -1,20 +1,31 @@
 .data
-bienvenida:	.asciiz "Bienvenido al sistema de combates Pokémon\n\n"
+
 feedback:	.asciiz "Usted escogio el pokemon numero "
 mensajeSalida:	.asciiz "Usted termino el programa con exito.\n"
 fout:   .asciiz "/home/nicoleagila/Documents/ESPOL/6s/Organizacion/Proyecto1P/Org-Combate-Pokemon/archivos en asm/funcion getPokemonsAndTypes/pokeTypes.txt"      # filename for output
 espacio: .asciiz ". "
 msjsalir:	.asciiz "Salir"
 .text
-.globl main
+.globl start
+	
+start:
+	addi $sp, $sp, -52
+	sw $s0, 0($sp)
+	sw $s1, 4($sp)
+	sw $s2, 8($sp)
+	sw $s3, 12($sp)
+	sw $s4, 16($sp)
+	sw $s5, 20($sp)
+	sw $s6, 24($sp)
+	sw $s7, 28($sp)
+	sw $t0, 32($sp)
+	sw $t1, 36($sp)
+	sw $t2, 40($sp)
+	sw $t3, 44($sp)
+	sw $ra, 48($sp)
+	
 
-main:
-
-	la $a0, bienvenida
-	li $v0, 4
-	syscall
-  	
-mostrarPokemones:
+	mostrarPokemones:
 		
 		
 	la $a0, fout
@@ -148,6 +159,21 @@ inBatalla:
 		jal batalla
 		
 salir:
-         li $v0,10 			#termina
-         syscall
+
+	lw $s0, 0($sp)
+	lw $s1, 4($sp)
+	lw $s2, 8($sp)
+	lw $s3, 12($sp)
+	lw $s4, 16($sp)
+	lw $s5, 20($sp)
+	lw $s6, 24($sp)
+	lw $s7, 28($sp)
+	lw $t0, 32($sp)
+	lw $t1, 36($sp)
+	lw $t2, 40($sp)
+	lw $t3, 44($sp)
+	lw $ra, 48($sp)
+	addi $sp, $sp, 52	
+         jr $ra
+         
 
