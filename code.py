@@ -10,8 +10,8 @@ def batalla(nombre1, nombre2, tipo1, tipo2):
     print("Combatientes: {0} vs. {1}".format(nombre1, nombre2))
     nombres = [nombre1, nombre2]
 
-    ataques = np.array([getFactor(tipo1, tipo2, tipos, matriz),
-                        getFactor(tipo2, tipo1, tipos, matriz)])
+    ataques = np.array([2*getFactor(tipo1, tipo2, tipos, matriz),
+                        2*getFactor(tipo2, tipo1, tipos, matriz)])
 
     vida = np.array([5.0, 5.0])
 
@@ -39,7 +39,7 @@ def ataque([indices, nombre, vida, ataques):                          #YA ESTA
     print()
 
 
-def readFile():                                                     #si
+def readFile():                                                     #YA ESTA
     pokemons = []
     types = []
     with open('pokeTypes.txt', 'r') as file:
@@ -94,7 +94,7 @@ def start():
     batalla(nombrePoke1, nombrePoke2, tipoPoke1, tipoPoke2)
 
 
-def obtenerMatrizVentajas(archivo: str):                            #si
+def obtenerMatrizVentajas(archivo: str):                            #QUEMAMOS MATRIZ
     with open(archivo, "r") as f:
         matriz = []
         for line in f:
@@ -108,7 +108,7 @@ def getFactor(atackType, defenseType, arrayTypes, matrixAdv):       #YA ESTA
     return matrixAdv[i, j]
 
 
-def getTypeArray(archivo):                                          #si
+def getTypeArray(archivo):                                          #QUEMAMOS ARREGLO
     with open(archivo, "r") as f:
         matriz = []
         for line in f:

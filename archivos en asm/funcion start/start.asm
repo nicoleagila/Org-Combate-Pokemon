@@ -1,35 +1,61 @@
 .data
-buffer: .space 10
-str1:	.asciiz "Ingrese un numero del 1 al 10"
-                        .text
-.globl __start
-__start:
+feedback:	.asciiz "Usted escogio el pokemon numero "
+mensajeSalida:	.asciiz "Usted termino el programa con exito.\n"
 
-         la $a0,str1 #Load and print string asking for string
-         li $v0,4
+.text
+.globl main
+
+main:
+
+mostrarPokemones:
+
+
+ingreso:
+	jal pedirIngreso
+	
+	move $s0, $v0
+	
+	beq $s0, -1, quiereSalir
+		
+        la $a0,feedback 				#Imprime la mensaje1 por pantalla
+	li $v0,4
+	syscall
+	
+	la $a0, ($s0) 					#carga en $a0 para imprimir
+	li $v0,1
+	syscall
+	
+	jal printLn
+	
+	jal pedirIngreso
+	move $s0, $v0
+	
+	beq $s0, -1, quiereSalir
+		
+        la $a0,feedback 				#Imprime la mensaje1 por pantalla
+	li $v0,4
+	syscall
+	
+	la $a0, ($s0) 					#carga en $a0 para imprimir
+	li $v0,1
+	syscall
+	
+	j salir
+
+         
+	quiereSalir:
+	
+	jal printLn
+	
+	la $a0,mensajeSalida 		#Imprime la mensaje1 por pantalla
+	li $v0,4
+	syscall
+
+
+batalla:
+
+	
+salir:
+         li $v0,10 			#termina
          syscall
 
-         li $v0,8 #take in input
-         la $a0, buffer #load byte space into address
-         li $a1, 10 # allot the byte space for string
-         move $t0,$a0 #save string to t0
-         syscall
-
-         la $a0, buffer #reload byte space to primary address
-#         move $a0,$t0 # primary address = t0 address (load pointer)
-         li $v0,4 # print string
-         syscall
-
-         li $v0,10 #end program
-         syscall
-
-
-
-             ###############################
-             #Output:
-             #Enter string(max 20 chars): qwerty 123
-             #You wrote:
-             #qwerty 123
-             #Enter string(max 20 chars):   new world oreddeYou wrote:
-             #  new world oredde //lol special character
-             ###############################
