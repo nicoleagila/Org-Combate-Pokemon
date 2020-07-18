@@ -2,14 +2,15 @@
 
 feedback:	.asciiz "Usted escogio el pokemon numero "
 mensajeSalida:	.asciiz "Usted termino el programa con exito.\n"
-fout:   .asciiz "/home/nicoleagila/Documents/ESPOL/6s/Organizacion/Proyecto1P/Org-Combate-Pokemon/archivos en asm/funcion getPokemonsAndTypes/pokeTypes.txt"      # filename for output
+# fout:   .asciiz "/home/nicoleagila/Documents/ESPOL/6s/Organizacion/Proyecto1P/Org-Combate-Pokemon/archivos en asm/funcion getPokemonsAndTypes/pokeTypes.txt"      # filename for output
+fout:   .asciiz "A:\\Asus\\Documents\\Orgy\\Project\\Org-Combate-Pokemon\\archivos en asm\\funcion start\\pokeTypes.txt"
 espacio: .asciiz ". "
 msjsalir:	.asciiz "Salir"
 .text
 .globl start
 	
 start:
-	addi $sp, $sp, -52
+	addi $sp, $sp, -56
 	sw $s0, 0($sp)
 	sw $s1, 4($sp)
 	sw $s2, 8($sp)
@@ -22,7 +23,8 @@ start:
 	sw $t1, 36($sp)
 	sw $t2, 40($sp)
 	sw $t3, 44($sp)
-	sw $ra, 48($sp)
+	sw $t4, 48($sp)
+	sw $ra, 52($sp)
 	
 
 	mostrarPokemones:
@@ -47,7 +49,7 @@ start:
 	
 
 	li $t1, 0		#indexador
-	li $t3, 0		#contador
+	li $t3, 1		#contador
 print:
 	slti $t2, $t3, 10
 	beq $t2, $zero, opcion11
@@ -99,7 +101,8 @@ ingreso:
 	li $v0,4
 	syscall
 	
-	la $a0, ($s2) 					#carga en $a0 para imprimir
+	addi $t4, $s2, 1
+	la $a0, ($t4) 					#carga en $a0 para imprimir
 	li $v0,1
 	syscall
 	
@@ -115,7 +118,8 @@ ingreso:
 	li $v0,4
 	syscall
 	
-	la $a0, ($s3) 					#carga en $a0 para imprimir
+	addi $t4, $s3, 1
+	la $a0, ($t4) 					#carga en $a0 para imprimir
 	li $v0,1
 	syscall
 	
@@ -172,8 +176,9 @@ salir:
 	lw $t1, 36($sp)
 	lw $t2, 40($sp)
 	lw $t3, 44($sp)
-	lw $ra, 48($sp)
-	addi $sp, $sp, 52
+	lw $t4, 48($sp)
+	lw $ra, 52($sp)
+	addi $sp, $sp, 56	
          jr $ra
          
 
