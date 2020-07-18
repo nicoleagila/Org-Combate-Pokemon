@@ -3,6 +3,7 @@
 str1: 		.asciiz ": Vida: "
 str2: 		.asciiz "Ataque: "
 tab: 		.asciiz " "
+valor0:		.float 0.0
 
 .text
 .globl printResult
@@ -36,8 +37,16 @@ printResult:
     	la $a1, ($s0)
     	la $a0, ($a2)
     	jal indexF
-	mov.s $f12, $f0			#$f0 -> vida[i] del atacante
-
+    	
+    	l.s $f1, valor0
+    	c.lt.s $f0, $f1
+    	bc1f else
+    	mov.s $f12, $f1
+    	j continue
+    	
+	else:
+    	mov.s $f12, $f0			#$f0 -> vida[i] del atacante
+	continue:
     	li $v0, 2
     	syscall				#imprime vida del atacante
 

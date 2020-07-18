@@ -2,8 +2,8 @@
 
 feedback:	.asciiz "Usted escogio el pokemon numero "
 mensajeSalida:	.asciiz "Usted termino el programa con exito.\n"
-# fout:   .asciiz "/home/nicoleagila/Documents/ESPOL/6s/Organizacion/Proyecto1P/Org-Combate-Pokemon/archivos en asm/funcion getPokemonsAndTypes/pokeTypes.txt"      # filename for output
-fout:   .asciiz "A:\\Asus\\Documents\\Orgy\\Project\\Org-Combate-Pokemon\\archivos en asm\\funcion start\\pokeTypes.txt"
+fout:   .asciiz "/home/nicoleagila/Documents/ESPOL/6s/Organizacion/Proyecto1P/Org-Combate-Pokemon/archivos en asm/funcion getPokemonsAndTypes/pokeTypes.txt"      # filename for output
+#fout:   .asciiz "A:\\Asus\\Documents\\Orgy\\Project\\Org-Combate-Pokemon\\archivos en asm\\funcion start\\pokeTypes.txt"
 espacio: .asciiz ". "
 msjsalir:	.asciiz "Salir"
 .text
@@ -51,7 +51,7 @@ start:
 	li $t1, 0		#indexador
 	li $t3, 1		#contador
 print:
-	slti $t2, $t3, 10
+	slti $t2, $t3, 11
 	beq $t2, $zero, opcion11
 	
 	la $a0, ($t3)
