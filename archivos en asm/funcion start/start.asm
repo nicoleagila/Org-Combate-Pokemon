@@ -173,7 +173,7 @@ salir:
 	lw $t2, 40($sp)
 	lw $t3, 44($sp)
 	lw $ra, 48($sp)
-	addi $sp, $sp, 52	
+	addi $sp, $sp, 52
          jr $ra
          
 
