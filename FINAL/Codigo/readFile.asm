@@ -11,41 +11,36 @@ buffer: .space tamano
 #Retorna: 	registro $v0 -- buffer con el texto del archivo cargado en memoria
 readFile:
 
-  	#Reservacion de memoria
   	addi $sp, $sp, -20 
-    	sw $t0, 0($sp)
-    	sw $a1, 4($sp)
-    	sw $a2, 8($sp)
-    	sw $a0, 12($sp)
-    	sw $ra, 16($sp)
+	sw $t0, 0($sp)
+	sw $a1, 4($sp)
+	sw $a2, 8($sp)
+	sw $a0, 12($sp)
+	sw $ra, 16($sp)
     	
-  	# abre el archivo para leer 
   	li $v0, 13
   	li $a1, 0
   	syscall
 
   	move $t0, $v0
   
-  	li $v0, 14       # system call para leer el archivo
+  	li $v0, 14
   	la $a1, buffer
   	li $a2, tamano
   	move $a0, $t0 
   	syscall
 
-
-	#cerrar el archivo	
   	li $v0, 16
   	move $a0, $t0
   	syscall
 
   	la $v0, buffer
   
-  	#Liberacion de memoria
-    	lw $t0, 0($sp)
-    	lw $a1, 4($sp)
-    	lw $a2, 8($sp)
-    	lw $a0, 12($sp)
-    	lw $ra, 16($sp)
-    	addi $sp, $sp, 20 
+	lw $t0, 0($sp)
+	lw $a1, 4($sp)
+	lw $a2, 8($sp)
+	lw $a0, 12($sp)
+	lw $ra, 16($sp)
+	addi $sp, $sp, 20 
   	jr $ra
 

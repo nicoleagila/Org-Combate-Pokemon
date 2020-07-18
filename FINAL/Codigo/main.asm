@@ -13,5 +13,5 @@ main:
 	
 	jal inicio
 	
-	li $v0,10 			#termina
-         syscall
+	li $v0,10
+    syscall

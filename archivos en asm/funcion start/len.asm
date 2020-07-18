@@ -1,8 +1,12 @@
 	.data
-newLine: 	.asciiz "\n"
+salto: 	.asciiz "\n"
 	.text
 .globl len
-# $a0 -> str a contar el len
+
+#len
+#Calcula la longitus de una cadena de texto
+#Parametros: 	registro $a0 -- la cadena de texto a contar
+#Retorna: 	registro $v0 -- la logitud de la cadena ingresada
 len:
 	#Reservacion de memoria
 	addi $sp, $sp, -20  #(6*4)
@@ -14,17 +18,18 @@ len:
 	
 	add $t0, $0, $0		# Iterador i bit a bit
 	
-	do:
+	while:
 	add $t1, $a0, $t0	# Offset
 	lb $t1, ($t1)		#cargo el primer bit para comparar que no sea /n
-	lb $t2, newLine
-	beq $t1, $t2, return
+	lb $t2, salto
+	beq $t1, $t2, retorno
 	addi $t0, $t0, 1
-	j do
+	j while
 	
 	
-	return:
+	retorno:
 	move $v0, $t0
+	
 	# Liberacion de memoria
 	lw $t0, 0($sp)
     	lw $t1, 4($sp)

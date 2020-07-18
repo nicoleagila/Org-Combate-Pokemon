@@ -30,28 +30,28 @@ ataque:
         li $a1, 0
 	la $a0, ($s0)
 	jal index
-	move $t2, $v0             #$t2 -> p1		indices[0]
+	move $t2, $v0
 
         li $a1, 1
 	la $a0, ($s0)
 	jal index
-	move $t3, $v0              #$t3 -> p2		indices[1]
+	move $t3, $v0
 
         la $a1, ($t3)
         la $a0, ($a2)
         jal indexF
-        mov.s $f1, $f0              #$f1 -> vida[p2]
+        mov.s $f1, $f0
 
         la $a1, ($t2)
         la $a0, ($a3)
         jal indexF
-        mov.s $f2, $f0              #$f2 -> ataque[p1]
+        mov.s $f2, $f0
 
-        sub.s $f1, $f1, $f2         #disminuye la vida del atacado 	vida[p2]=vida[p2]-ataque[p1]
+        sub.s $f1, $f1, $f2
         
         sll $t0, $t3, 2			
         add $t0, $a2, $t0
-        s.s $f1, 0($t0)			#guarda el nuevo valor en el arreglo de vidas
+        s.s $f1, 0($t0)	
 	
 	jal printLn
 	

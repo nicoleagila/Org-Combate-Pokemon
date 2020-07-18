@@ -3,12 +3,14 @@ salto: .asciiz "\0"
 
 .text
 
-.globl compareString
+.globl comparaStr
 
-#compara si dos string son iguales
-#parametros: string1 -> $a0, string2 ->$a1	
-#retorna valor de la resta entre palabras, 0 si son iguales, otro numero si son diferentes
-compareString:
+#comparaStr
+#Compara una cadena de texto con otra
+#Parametros: 	registro $a0 -- la cadena de texto 1 a comparar
+#		registro $a1 -- la cadena de texto 2 a comparar
+#Retorna: 	registro $v0 -- la resta entre el ascii de las dos cadenas, 0 si son iguales.
+comparaStr:
 
 	addi $sp, $sp, -20
 	sw $s0, 0($sp)
@@ -18,7 +20,7 @@ compareString:
         sw $ra, 16($sp)
         
 
-bucle:
+while:
 	lb $s2, salto			#carga el salto de linea
 	
         lb $s0, 0($a0)			#carga el primer caracter del string1
@@ -36,7 +38,7 @@ continua:
 					#continua
         addi $a0, $a0, 1		#aunmenta ambas direcciones en 1 para volver a comparar
         addi $a1, $a1, 1
-        j bucle
+        j while
 
 fin:
         move $v0, $t0

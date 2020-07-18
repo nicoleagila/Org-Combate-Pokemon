@@ -1,20 +1,21 @@
 	.data
-comma:	.ascii ","
+coma:	.ascii ","
 r:	.ascii "\t"
-void:	.ascii "\0"
-word:	.space 6000
+nulo:	.ascii "\0"
+buffer:	.space 6000
 		.align 2
-pokemons:	.space	440
+pokemones:	.space	440
 		.align 2
-types:		.space	440
+tipos:		.space	440
 	.text
-.globl 	getPokemonsAndTypes
+.globl 	getPokemonesyTipos
 	
 # $a0-> se cambia a $s0, el buffer
 #$t0 -> i 
 # $s1 -> word en donde guardar las palabras
 # Funcion que me retorna dos arreglos paralelos $v0->Arreglo con todos los pokemones y  $v1->Areglo con todos los tipos
-getPokemonsAndTypes:
+getPokemonesyTipos:
+
 	# Reservacion de sp
 	addi $sp, $sp, -40
     	sw $ra, 0($sp)
@@ -29,46 +30,44 @@ getPokemonsAndTypes:
     	sw $t3, 36($sp)
     	
 	
-	la $s6, pokemons
-	la $s7, types
+	la $s6, pokemones
+	la $s7, tipos
 	
 	move $s0, $a0 	#cambio de variable a el arreglo para dejar llibre $a0
 	add $t0, $0, $0	#iterador i bit a bit
 	add $t4, $0, $0	#iterador PARA ESCRITURA
 	add $t1, $0, $0	#iterador de guardacion
 	
-	la $s1, word
+	la $s1, buffer
 	
-whileNotComma:
-	#jal heapReservation
-	#move $s1, $v0
-	#mover la vaina y nitocar
+whileNoComa:
+
 	move $s5, $s1
-	doComma:
+	doComa:
 	add $t2, $t0, $s0	# offset + BA del buffer 
 	lb $a0, 0($t2)		#obtengo el bit a comparar
-	lb $a1, comma		# guardo bit para comparar
+	lb $a1, coma		# guardo bit para comparar
 	
-	jal compareBit
+	jal comparaBit
 	
-	whileComma:
-	beq $v0, 0, savePokemon
-	#move $s5, $s1
+	whileComa:
+	beq $v0, 0, guardarPok
+
 	add $s2, $t4, $s5
    	sb $a0, 0($s2)
    	addi $t4,$t4, 1		#aumento escitor
    	addi $t0, $t0, 1
-	j doComma
+	j doComa
 	
-savePokemon:
-	#move $s5, $s1
+guardarPok:
+
 	add $t3, $s6, $t1
     	sw $s5, 0($t3)
     	addi $t0, $t0, 1
     	add $t4, $0, $0		#encero mi escritor
-    	j whileNotR
+    	j whileNoR
     	
-whileNotR:
+whileNoR:
 	#jal heapReservation
 	#move $s1, $v0
 	addi    $s1,$s1,15
@@ -77,36 +76,36 @@ whileNotR:
 	doR:
 	add $t2, $t0, $s0	# offset + BA del buffer 
 	lb $a0, 0($t2)		#obtengo el bit a comparar	
-	lb $a1, void		# guardo bit para comparar
-	jal compareBit
+	lb $a1, nulo		# guardo bit para comparar
+	jal comparaBit
 	
 	whileR:
-	beq $v0, 0, saveLast
+	beq $v0, 0, ultimo
 	
 	lb $a1, r		# guardo bit para comparar
-	jal compareBit
+	jal comparaBit
 	
-	beq $v0, 0, saveType
+	beq $v0, 0, guardar
 	
-	#move $s5, $s1
+
 	add $s2, $t4, $s5	#uso t4 para escribir
    	sb $a0, 0($s2)
    	addi $t0, $t0, 1
    	addi $t4,$t4, 1		#aumento escitor
 	j doR
 	
-saveType:
-	#move $s5, $s1
+guardar:
+
 	add $t3, $s7, $t1
     	sw $s5, 0($t3)
     	addi $t0, $t0, 2	#aumento 2 para saltar en \t y \n
     	add $t4, $0, $0		#encero mi escritor
     	addi $t1, $t1, 4	#aumento en 4 el iterador de las guardaciones en types y pokemons
     	addi    $s1,$s1,15
-    	j whileNotComma
+    	j whileNoComa
  
-saveLast:
-	#move $s5, $s1
+ultimo:
+
 	add $t3, $s7, $t1
     	sw $s5, 0($t3)
     	
@@ -125,5 +124,5 @@ saveLast:
     	lw $t4, 36($sp)
         addi $sp, $sp, 40
        	
-	jr $ra	#retornar
+	jr $ra
 	

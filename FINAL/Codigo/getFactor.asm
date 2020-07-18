@@ -29,19 +29,17 @@ getFactor:
 		sw $t5, 40($sp)
 		sw $ra, 44($sp)
 
-		la $s0, ($a0)			#$s0 -> tipo de ataque del pokemon
-		la $s1, ($a1)			#$s1 -> tipo de defensa del pokemon
+		la $s0, ($a0)
+		la $s1, ($a1)
 		
-						#carga los indices como -1
-		li $s2, -1			# $s2 -> i (defensa)
-		li $s3, -1			# $s3 -> j (ataque)
+		li $s2, -1
+		li $s3, -1
 	
-		li $t0, 0			# $t0 -> k=0
+		li $t0, 0
 			
-		li $s4, DIMENSION		# $s4 -> dimension del arreglo
+		li $s4, DIMENSION
 		
-		# k<len y (j<0 o i<0)
-condicion:	
+	condicion:	
 		slt $t1, $t0, $s4
 		slt $t2, $s3, $zero
 		slt $t3, $s2, $zero
@@ -52,44 +50,44 @@ condicion:
 		bne $t4, $zero, cuerpo
 		j retorno
 
-cuerpo:
+	cuerpo:
 
-comparaAtaque:	sll $t4, $t0, 2
+	comparaAtaque:
+		sll $t4, $t0, 2
 		add $t4, $t4, $a2
-		lw $t4, 0($t4)			# $t4 -> tipo actual
+		lw $t4, 0($t4)
 		
 		la $a0, ($t4)
-		la $a1, ($s0)			#compara el tipo de ataque con el tipo actual
+		la $a1, ($s0)
 		jal comparaStr 
 		
 		bne $v0, $zero, comparaDefensa
 		
-guardarAtaque:
+	guardarAtaque:
 		move $s3, $t0				
 		
-comparaDefensa:
+	comparaDefensa:
 		la $a0, ($t4)
-		la $a1, ($s1)			#compara el tipo de defensa con el tipo actual
+		la $a1, ($s1)
 		jal comparaStr 
 		
 		bne $v0, $zero, incremento
 		
-guardarDefensa:
+	guardarDefensa:
 		move $s2, $t0		
 		
-incremento:
+	incremento:
 		addi $t0, $t0, 1
 		j condicion
 
 
-retorno:
-				
-		#indexar a matrix
-		mul $t5, $s3, $s4		# $t5 = i * tamanoCol
-		add $t5, $t5, $s2		#	 + j
-		mul $t5, $t5, TAMANO_DATA	# * TAMANO_DATA
+	retorno:			
 		
-		add $t5, $t5, $a3		#direccionBase
+		mul $t5, $s3, $s4
+		add $t5, $t5, $s2
+		mul $t5, $t5, TAMANO_DATA
+		
+		add $t5, $t5, $a3
 		l.s $f0, ($t5)
 		
 		lw $s0, 0($sp)

@@ -46,7 +46,7 @@ t5: 		.asciiz "ground"
 t6: 		.asciiz "rock"
 t7: 		.asciiz "bug"
 t8: 		.asciiz "ghost"
-t9:		.asciiz "steel"
+t9:			.asciiz "steel"
 t10:		.asciiz "fire"
 t11: 		.asciiz "water"
 t12: 		.asciiz "grass"
@@ -61,167 +61,160 @@ types:		.word t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, 
 .text
 
 .globl batalla
+
 #recibe:
 #	$a0 -> nombre del pok1, 	$a2 -> tipo pok1
 #	$a1 -> nombre pok2, 		$a3 -> tipo pok2
 batalla:
-	addi $sp, $sp, -48
-	sw $s0, 0($sp)
-	sw $s1, 4($sp)
-	sw $s2, 8($sp)
-	sw $s3, 12($sp)
-	sw $t0, 16($sp)
-	sw $t1, 20($sp)
-	sw $t2, 24($sp)
-	sw $t3, 28($sp)
-	sw $t4, 32($sp)
-	s.s $f1, 36($sp)
-	s.s $f2, 40($sp)
-	sw $ra, 44($sp)
-	
-	move $s0, $a0
-	move $s1, $a1
-	move $s2, $a2
-	move $s3, $a3
+		addi $sp, $sp, -48
+		sw $s0, 0($sp)
+		sw $s1, 4($sp)
+		sw $s2, 8($sp)
+		sw $s3, 12($sp)
+		sw $t0, 16($sp)
+		sw $t1, 20($sp)
+		sw $t2, 24($sp)
+		sw $t3, 28($sp)
+		sw $t4, 32($sp)
+		s.s $f1, 36($sp)
+		s.s $f2, 40($sp)
+		sw $ra, 44($sp)
 		
-	#imprime los combatientes
-	la $a0, msjCombatienes
-	li $v0, 4
-	syscall
-	
-	la $a0, ($s0)
-	li $v0, 4
-	syscall	
-	
-	la $a0, msjVs
-	li $v0, 4
-	syscall	
-	
-	la $a0, ($s1)
-	li $v0, 4
-	syscall
-	
-	jal printLn
-	jal printLn
-	
-	#crea el arreglo de nombres de los dos pokemones
-	li $t0, 0
-	sw $s0, nombres($t0)
-	
-	addi $t0, $t0, 4
-	sw $s1, nombres($t0)
-	
-	# crea el arreglo de ataques, multiplicando el ataque base por sus factores
-	la $a0, ($s2)
-	la $a1, ($s3)
-	la $a2, types
-	la $a3, mFactor
-	jal getFactor
-	
-	li $t0, 0
-	l.s $f1, valor2
-	mul.s $f0, $f0, $f1
-	s.s $f0, ataques($t0)		# carga el factor de ataque del pok1
-	
-	la $a0, ($s3)
-	la $a1, ($s2)
-	la $a2, types
-	la $a3, mFactor
-	jal getFactor
+		move $s0, $a0
+		move $s1, $a1
+		move $s2, $a2
+		move $s3, $a3
+			
+		la $a0, msjCombatienes
+		li $v0, 4
+		syscall
+		
+		la $a0, ($s0)
+		li $v0, 4
+		syscall	
+		
+		la $a0, msjVs
+		li $v0, 4
+		syscall	
+		
+		la $a0, ($s1)
+		li $v0, 4
+		syscall
+		
+		jal printLn
+		jal printLn
+		
+		li $t0, 0
+		sw $s0, nombres($t0)
+		
+		addi $t0, $t0, 4
+		sw $s1, nombres($t0)
+		
+		la $a0, ($s2)
+		la $a1, ($s3)
+		la $a2, types
+		la $a3, mFactor
+		jal getFactor
+		
+		li $t0, 0
+		l.s $f1, valor2
+		mul.s $f0, $f0, $f1
+		s.s $f0, ataques($t0)
+		
+		la $a0, ($s3)
+		la $a1, ($s2)
+		la $a2, types
+		la $a3, mFactor
+		jal getFactor
 
-	addi $t0, $t0, 4
-	l.s $f1, valor2
-	mul.s $f0, $f0, $f1
-	s.s $f0, ataques($t0)		# carga el factor de ataque del pok2
-	
-while:	
-	# verifica si la vida de los dos es mayor a 0
-	li $t0, 0			#indice
-	l.s $f1, valor0			#0 para comparar
-											#ME QUEDE AQUI	
-	l.s $f2, vidas($t0)		#vida del primer pok
-	
-	c.lt.s $f1, $f2
-	bc1f ganador
+		addi $t0, $t0, 4
+		l.s $f1, valor2
+		mul.s $f0, $f0, $f1
+		s.s $f0, ataques($t0)
+		
+	while:	
+		li $t0, 0
+		l.s $f1, valor0	
 
-	addi $t0, $t0, 4
-	l.s $f2, vidas($t0)		#vida del segundo pok
-	
-	c.lt.s $f1, $f2
-	bc1f ganador
-	
-	# ataca pokemon 1 a pokemon 2
-	li $t1, 0
-	sw $t1, indices($t1)
-	
-	addi $t1, $t1, 1
-	addi $t2, $zero, 4
-	sw $t1, indices($t2)
-	
-	la $a0, indices
-	la $a1, nombres
-	la $a2, vidas
-	la $a3, ataques
-	
-	jal ataque
-	
-	jal printLn
-	
-	# verifica si la vida del pokemon atacado termino
-	li $t0, 4
-	l.s $f1, valor0	
-	l.s $f2, vidas($t0)		#verifico del segundo pok
-	
-	c.lt.s $f1, $f2
-	bc1f while
-	
-	# contraataque
-        li $t3, 0
-        li $t4, 4
-	sw $t3, indices($t4)
-	
-	addi $t3, $t3, 1
-	addi $t4, $t4, -4
-	sw $t3, indices($t4)
-	
-	la $a0, indices
-	la $a1, nombres
-	la $a2, vidas
-	la $a3, ataques
-	
-	jal ataque
-	jal printLn
-	j while
-	            
-ganador:
-	# obtiene el ganador
-	la $a0, vidas
-	jal valorMaximo
-	sll $t0, $v0, 2
-	lw $t1, nombres($t0)
-	
-	# imprime al ganador
-	la $a0, ($t1)
-	li $v0, 4
-	syscall
-	
-	la $a0, msjGanador
-	li $v0, 4
-	syscall	
-	
+		l.s $f2, vidas($t0)
+		
+		c.lt.s $f1, $f2
+		bc1f ganador
 
-	lw $s0, 0($sp)
-	lw $s1, 4($sp)
-	lw $s2, 8($sp)
-	lw $s3, 12($sp)
-	lw $t0, 16($sp)
-	lw $t1, 20($sp)
-	lw $t2, 24($sp)
-	lw $t3, 28($sp)
-	lw $t4, 32($sp)
-	l.s $f1, 36($sp)
-	l.s $f2, 40($sp)
-	lw $ra, 44($sp)
-	addi $sp, $sp, 48
-	
-	jr $ra
+		addi $t0, $t0, 4
+		l.s $f2, vidas($t0)
+		
+		c.lt.s $f1, $f2
+		bc1f ganador
+		
+		li $t1, 0
+		sw $t1, indices($t1)
+		
+		addi $t1, $t1, 1
+		addi $t2, $zero, 4
+		sw $t1, indices($t2)
+		
+		la $a0, indices
+		la $a1, nombres
+		la $a2, vidas
+		la $a3, ataques
+		
+		jal ataque
+		
+		jal printLn
+		
+		li $t0, 4
+		l.s $f1, valor0	
+		l.s $f2, vidas($t0)
+		
+		c.lt.s $f1, $f2
+		bc1f while
+		
+		li $t3, 0
+		li $t4, 4
+		sw $t3, indices($t4)
+		
+		addi $t3, $t3, 1
+		addi $t4, $t4, -4
+		sw $t3, indices($t4)
+		
+		la $a0, indices
+		la $a1, nombres
+		la $a2, vidas
+		la $a3, ataques
+		
+		jal ataque
+		jal printLn
+		j while
+					
+	ganador:
+
+		la $a0, vidas
+		jal valorMaximo
+		sll $t0, $v0, 2
+		lw $t1, nombres($t0)
+		
+		la $a0, ($t1)
+		li $v0, 4
+		syscall
+		
+		la $a0, msjGanador
+		li $v0, 4
+		syscall	
+		
+
+		lw $s0, 0($sp)
+		lw $s1, 4($sp)
+		lw $s2, 8($sp)
+		lw $s3, 12($sp)
+		lw $t0, 16($sp)
+		lw $t1, 20($sp)
+		lw $t2, 24($sp)
+		lw $t3, 28($sp)
+		lw $t4, 32($sp)
+		l.s $f1, 36($sp)
+		l.s $f2, 40($sp)
+		lw $ra, 44($sp)
+		addi $sp, $sp, 48
+		
+		jr $ra

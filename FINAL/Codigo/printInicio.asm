@@ -25,107 +25,103 @@ printInicio:
 	sw $t3, 16($sp)
 	sw $t4, 20($sp)
 
-	la $s0, ($a0)			#indices-> $s0, nombre -> $s1
+	la $s0, ($a0)
 	la $s1, ($a1)
 
 	li $a1, 0
 	jal index
-	move $t2, $v0			#i=indices[0] -> $t2 indice del atacante.
+	move $t2, $v0
 	
     la $a1, ($t2)
     la $a0, ($s1)
     jal index
-    move $t4, $v0			#$t4 -> nombre[i] atacante
+    move $t4, $v0
 
     li $v0, 4
     la $a0, ($t4)
-    syscall				#imprime el nombre de atacante
+    syscall
 
     li $v0, 4
     la $a0, texto1
-    syscall				#imprime el testo de str1
+    syscall
 
     la $a1, ($t2)
     la $a0, ($a2)
     jal indexF
-	mov.s $f12, $f0			#$t4 -> vida[i] del atacante
+	mov.s $f12, $f0
 
     li $v0, 2
-    syscall				#imprime vida del atacante
+    syscall
 
     li $v0, 4
     la $a0, espacio
-    syscall				#imprime una tabulacion
+    syscall
     
     li $v0, 4
     la $a0, texto2
-    syscall				#imprime texto2
+    syscall
 
 	la $a1, ($t2)
 	la $a0, ($a3)
     jal indexF
-	mov.s $f12, $f0			#$t4 -> ataque[i] atacante
-	
+	mov.s $f12, $f0
+
 	li $v0, 2
-	syscall				#imprime el ataque del atacante
+	syscall
 
     li $v0, 4
     la $a0, espacio
-    syscall				#imprime un espacio
+    syscall
 
 	li $v0, 4
 	la $a0, texto3
-	syscall				#imprime texto3
+	syscall
 	
 	li $a1, 1
 	la $a0, ($s0)
 	jal index
-	move $t3, $v0			#j=indices[1] -> $t3 indice del atacado 
+	move $t3, $v0
 	
 	la $a1, ($t3)		
     la $a0, ($s1)
     jal index
-    move $t4, $v0			#$t4 -> nombre[i] atacado
+    move $t4, $v0
 
     li $v0, 4
     la $a0, ($t4)
-    syscall				#imprime el nombre de atacado
+    syscall
 
     li $v0, 4
     la $a0, texto1
-    syscall				#imprime el texto1
-
-	
+    syscall
     
     la $a1, ($t3)
     la $a0, ($a2)
     jal indexF
-	mov.s $f12, $f0			#$t4 -> vida[i] del atacado
+	mov.s $f12, $f0
 
     li $v0, 4
     la $a0, espacio
-    syscall				#imprime un espacio
+    syscall
 
     li $v0, 2
-    syscall				#imprime vida del atacado
+    syscall
     
-        
     li $v0, 4
     la $a0, espacio
-    syscall				#imprime un espacio
+    syscall
 
     li $v0, 4
     la $a0, texto2
-    syscall				#imprime texto2
-
+    syscall
 
 	la $a1, ($t3)
 	la $a0, ($a3)
-    	jal indexF
-	mov.s $f12, $f0			#$t4 -> ataque[i] atacado
+    jal indexF
+	mov.s $f12, $f0
 	
 	li $v0, 2
-	syscall				#imprime el ataque del atacado
+	syscall
 	
 	lw $s1, 0($sp)
 	lw $s0, 4($sp)

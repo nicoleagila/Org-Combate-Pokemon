@@ -1,15 +1,20 @@
 .data
 
-feedback:	.asciiz "Usted escogio el pokemon numero "
+retroalimentacion:	.asciiz "Usted escogio el pokemon numero "
 mensajeSalida:	.asciiz "Usted termino el programa con exito.\n"
-fout:   .asciiz "/home/nicoleagila/Documents/ESPOL/6s/Organizacion/Proyecto1P/Org-Combate-Pokemon/archivos en asm/funcion getPokemonsAndTypes/pokeTypes.txt"      # filename for output
-#fout:   .asciiz "A:\\Asus\\Documents\\Orgy\\Project\\Org-Combate-Pokemon\\archivos en asm\\funcion start\\pokeTypes.txt"
+archivo:   .asciiz "/home/nicoleagila/Documents/ESPOL/6s/Organizacion/Proyecto1P/Org-Combate-Pokemon/archivos en asm/funcion getPokemonsAndTypes/pokeTypes.txt"
+
+#archivo:   .asciiz "A:\\Asus\\Documents\\Orgy\\Project\\Org-Combate-Pokemon\\archivos en asm\\funcion start\\pokeTypes.txt"
+
 espacio: .asciiz ". "
 msjsalir:	.asciiz "Salir"
+
 .text
-.globl start
-	
-start:
+.globl inicio
+
+#inicio
+#Simula el ingreso de datos, y batalla entre los pokemones escogidos completa.
+inicio:
 	addi $sp, $sp, -56
 	sw $s0, 0($sp)
 	sw $s1, 4($sp)
@@ -28,14 +33,13 @@ start:
 	
 
 	mostrarPokemones:
-		
-		
-	la $a0, fout
-  	jal read
+
+	la $a0, archivo
+  	jal readFile
   	
   	la $a0, ($v0)
   	
-  	jal getPokemonsAndTypes
+  	jal getPokemonesyTipos
   	
   	la $s1, ($v0)
   	la $s2, ($v1)
@@ -43,7 +47,7 @@ start:
   	la $a0, ($s1)
 	la $a1, ($s2)
 	
-	jal getTenPokemons
+	jal get10Pokemones
 	la $s0, ($v0)			#10 pokemones $s0
 	la $s1, ($v1)			#10 tiposs $s1
 	
@@ -97,7 +101,7 @@ ingreso:
 	
 	beq $s2, -1, quiereSalir
 		
-        la $a0,feedback 				#Imprime la mensaje1 por pantalla
+        la $a0,retroalimentacion 				#Imprime la mensaje1 por pantalla
 	li $v0,4
 	syscall
 	
@@ -114,7 +118,7 @@ ingreso:
 	
 	beq $s3, -1, quiereSalir
 		
-        la $a0,feedback 				#Imprime la mensaje1 por pantalla
+        la $a0,retroalimentacion 				#Imprime la mensaje1 por pantalla
 	li $v0,4
 	syscall
 	
@@ -123,7 +127,7 @@ ingreso:
 	li $v0,1
 	syscall
 	
-	j inBatalla
+	j enBatalla
 
          
 	quiereSalir:
@@ -138,7 +142,7 @@ ingreso:
 
 # $s2 -> indice 1
 # $s3 -> indice 2
-inBatalla:
+enBatalla:
 		sll $t0, $s2, 2
 		add $t0, $t0, $s0
 		lw $s4, 0($t0)		#$s4 nombre pok1

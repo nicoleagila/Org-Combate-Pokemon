@@ -1,16 +1,20 @@
 		.data
 
-str1: 		.asciiz ": Vida: "
-str2: 		.asciiz "Ataque: "
-tab: 		.asciiz " "
-valor0:		.float 0.0
+texto1: 		.asciiz ": Vida: "
+texto2: 		.asciiz "Ataque: "
+espacio: 		.asciiz " "
+valor0:			.float 0.0
 
 .text
-.globl printResult
-#Parametros:    i-> $a0, nombre -> $a1, vida ->$a2, ataque -> $a3
-#No hay retorno, solo muestra por pantalla
+.globl printResultado
 
-printResult:
+#printResultado
+#Imprime el resultado de la batalla
+#Parametros: 	registro $a0 -- indice del pokemon que se va a imprimir la informacion
+#		registro $a1 -- base del arreglo de nombres de pokemones
+#		registro $a2 -- base del arreglo de vidas
+#		registro $a3 -- base del arreglo de ataques
+printResultado:
 
 	addi $sp, $sp, -16
 	sw $s1, 0($sp)
@@ -31,7 +35,7 @@ printResult:
     	syscall				#imprime el nombre de atacante
 
     	li $v0, 4
-    	la $a0, str1
+    	la $a0, texto1
     	syscall				#imprime el testo de str1
 
     	la $a1, ($s0)
@@ -40,22 +44,23 @@ printResult:
     	
     	l.s $f1, valor0
     	c.lt.s $f0, $f1
-    	bc1f else
+    	bc1f noEs
     	mov.s $f12, $f1
-    	j continue
+    	j continua
     	
-	else:
+	noEs:
     	mov.s $f12, $f0			#$f0 -> vida[i] del atacante
-	continue:
+    	
+	continua:
     	li $v0, 2
     	syscall				#imprime vida del atacante
 
     	li $v0, 4
-    	la $a0, tab
+    	la $a0, espacio
     	syscall				#imprime una tabulacion
     
     	li $v0, 4
-    	la $a0, str2
+    	la $a0, texto2
     	syscall				#imprime texto en str2
 
 	la $a1, ($s0)

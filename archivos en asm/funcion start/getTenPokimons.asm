@@ -1,15 +1,21 @@
 	.data
-	.align 10
-chosenOnes:	.space 50000
-	.align 10
-chosenTypes:	.space 50000
+		.align 10
+pokEscogidos:	.space 50000
+
+		.align 10
+tiposEscogidos:	.space 50000
 
 	.text
-.globl getTenPokemons
-# a0 -> Arreglo de pokemons
-# a1 -> Arreglo de tipos
-# Funcion que retorna dos arreglos paralelos en $v0->Arreglo con 10 pokemones y $v1->arreglo con 10 tipos 
-getTenPokemons:
+.globl get10Pokemones
+
+#get10Pokemones
+#Crea dos arreglos paralelos los 10 pokemones escogidos con sus respectivos tipos
+#Parametros: 	registro $a0 -- base del arreglo de pokemones
+#		registro $a1 -- base del arreglo de tipos
+#Retorna: 	registro $v0 -- base del arreglo con 10 nombres de pokemones
+#		registro $v1 -- base del arreglo con los 10 tipos de pokemones correspondientes
+get10Pokemones:
+
 	#Reservacion de memoria
 	addi $sp, $sp, -36 
     	sw $t0, 0($sp)
@@ -22,23 +28,23 @@ getTenPokemons:
     	sw $s2, 28($sp)
     	sw $ra, 32($sp)
     	
-	la $s1, chosenOnes
-	la $s2, chosenTypes
+	la $s1, pokEscogidos
+	la $s2, tiposEscogidos
 	
 	jal random
 	move $t0, $v0
 	add $t4, $t0, 10  # +10 para saber el limite de pokemones que queremos
 	
 	li $t3, 0
-loop:
-	bgt $t0, $t4, exit
+while:
+	bgt $t0, $t4, fin
  	
  	sll $t1, $t0, 2		#offset	
  	# Cargo el pokemon
 	add $t2, $t1, $a0	#offset+BA	
 	lw $s0, 0($t2)
 	
-	# Guardo en chosenOnes
+	# Guardo en pokEscogidos
 	add $t2, $t3, $s1
 	sw $s0, 0($t2)
 	
@@ -46,19 +52,21 @@ loop:
 	add $t2, $t1, $a1 
 	lw $s0, 0($t2)
 	
-	# Guardo en chossenTypes
+	# Guardo en tiposEscogidos
 	add $t2, $t3, $s2 
 	sw $s0, 0($t2)
 	
 	# Aumento en uno el iterador 
 	addi $t0, $t0, 1
+	
 	# Aumento en 4 el iterador de los chosen
 	addi $t3, $t3, 4
-	j loop
+	j while
 	
-exit:
+fin:
 	la $v0, ($s1)
 	la $v1, ($s2)
+	
 	# Liberacion de memoria
     	lw $t0, 0($sp)
     	lw $t1, 4($sp)

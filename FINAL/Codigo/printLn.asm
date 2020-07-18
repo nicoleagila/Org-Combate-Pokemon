@@ -11,7 +11,6 @@ printLn:
 	sw $ra, 0($sp)
 	sw $a0, 4($sp)
 	
-	
 	li $v0, 4  
 	la $a0, salto      
 	syscall 

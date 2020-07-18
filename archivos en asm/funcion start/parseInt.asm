@@ -1,7 +1,12 @@
 	.text
 .globl	parseInt
-# $a0 -> str a convertir
+
+#parseInt
+#Convierte un numero en texto a un digito entero
+#Parametros: 	registro $a0 -- numero en texto a convertir
+#Retorna: 	registro $v0 -- numero convertido a digito
 parseInt:
+
 	# Reservacion de memoria
 	addi $sp, $sp, -32  #(6*4)
     	sw $t0, 0($sp)
@@ -27,12 +32,12 @@ parseInt:
 	add $t2, $s1, $t0	# Offset
 	lb $t2, ($t2)		
 	addi $t2, $t2, -48  	#Convierte de ASCII a digit
-	#1523
 	
 	move $a0, $t2		#muevo a a0 el numeroo en int
 	sub $a1, $s0, $t0	#muevo a a1 el la resta del len - i  para oobtener el factor n
-	jal numberEn
-	#1000
+	jal numeroPotencia10
+
+
 	add $t1, $t1, $v0
 	addi $t0, $t0, 1
 	j for
