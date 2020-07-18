@@ -1,7 +1,7 @@
 .data
 	.eqv SIZE 10
 input: .space SIZE
-mensajePedir:	.asciiz "Ingrese un pokemon del 0 al 9 (10 para salir).\n-> "
+mensajePedir:	.asciiz "Ingrese un pokemon del 1 al 10 (11 para salir).\n-> "
 
 .text
 .globl pedirIngreso
@@ -34,7 +34,8 @@ pedir:
 	
 	la $a0, input
 	jal parseInt					#asume que recibe input y retorna en $v0 el numero entero
-
+	
+	addi $v0, $v0, -1				# Le resto uno para que sea el indice real
 	move $s0, $v0					#guardo el valor entero en $a0
 
 comparaRango:

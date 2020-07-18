@@ -92,6 +92,8 @@ printInicio:
     la $a0, str1
     syscall				#imprime el testo de str1
 
+	
+    
     la $a1, ($t3)
     la $a0, ($a2)
     jal indexF
